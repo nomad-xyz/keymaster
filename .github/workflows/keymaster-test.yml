@@ -1,5 +1,5 @@
 name: Build and Test Packages
-on: [push]
+on: [ push ]
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -11,72 +11,3 @@ jobs:
           version: nightly
       - run: |
           yarn install --immutable-cache
-      - run: |
-          yarn lint
-      - name: Get latest accumulator-cli version
-        id: acli-version
-        run: |
-          echo "::set-output name=ACLI_HASH::$(curl https://api.github.com/repos/odyslam/accumulator-cli/git/refs/heads/master | jq '.object.sha' -r)"
-      - name: Accumulator-cli Cache
-        id: cache-acli
-        uses: actions/cache@v3
-        with:
-          path: scripts/accumulator-cli
-          key: ${{ runner.os }}-${{ steps.acli-version.outputs.ACLI_HASH }}-accumulator-cli
-      - uses: actions-rs/toolchain@v1
-        if: steps.cache-acli.outputs.cache-hit != 'true'
-        with:
-          profile: minimal
-          toolchain: stable
-      - run: |
-          yarn build:accumulator-cli
-      - name: Cache forge libs
-        id: cache-forge-libs
-        uses: actions/cache@v3
-        with:
-          path: lib
-          key: ${{ hashFiles('scripts/install-deps.sh') }}
-      - name: Cache contracts-core
-        id: cache-contracts-core
-        uses: actions/cache@v3
-        with:
-          path: |
-            packages/contracts-core/src
-            packages/contracts-core/cache
-            packages/contracts-core/artifacts
-            packages/contracts-core/foundry_artifacts
-          key: ${{ hashFiles('packages/contracts-core/contracts/**') }}
-      - name: Cache contracts-bridge
-        id: cache-contracts-bridge
-        uses: actions/cache@v3
-        with:
-          path: |
-            packages/contracts-bridge/src
-            packages/contracts-bridge/cache
-            packages/contracts-bridge/artifacts
-            packages/contracts-bridge/foundry_artifacts
-          key: ${{ hashFiles('packages/contracts-bridge/contracts/**') }}
-      - name: Cache contracts-router
-        id: cache-contracts-router
-        uses: actions/cache@v3
-        with:
-          path: |
-            packages/contracts-router/src
-            packages/contracts-router/cache
-            packages/contracts-router/artifacts
-            packages/contracts-router/foundry_artifacts
-          key: ${{ hashFiles('packages/contracts-router/contracts/**') }}
-      - run: |
-          yarn build
-      - run: |
-          yarn test:unit
-      - name: "Check Gas snapshot"
-        continue-on-error: true
-        id: snapshot-check
-        run: |
-          yarn snapshot:check
-      - name: "Inspect Storage Layout"
-        continue-on-error: false
-        id: storage-inspect-check
-        run: |
-          yarn storage-inspect:check
