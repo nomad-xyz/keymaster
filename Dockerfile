@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18.7.0
 # ENV NODE_ENV=production
 
 ARG GIT_COMMIT
