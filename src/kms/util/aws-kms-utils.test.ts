@@ -5,7 +5,6 @@ import {
   findEthereumSig,
 } from "./aws-kms-utils";
 // import { describe, test } from "mocha";
-import { expect } from "chai";
 
 describe("getEthereumAddress", () => {
   test("should work correctly", () => {
@@ -13,7 +12,7 @@ describe("getEthereumAddress", () => {
       "3056301006072a8648ce3d020106052b8104000a03420004f2de8ae7a9f594fb0d399abfb58639f43fb80960a1ed7c6e257c11e764d4759e1773a2c7ec7b913bec5d0e3a12bd7acd199f62e86de3f83b35bf6749fc1144ba",
       "hex"
     );
-    expect(getEthereumAddress(samplePubKey)).to.equal(
+    expect(getEthereumAddress(samplePubKey)).toEqual(
       "0xe94e130546485b928c9c9b9a5e69eb787172952e"
     );
   });
@@ -22,7 +21,7 @@ describe("getEthereumAddress", () => {
       "3056301006072a8648ce3d020106052b8104000a03420004f2de8ae7a9f594fb0d399abfb58639f43fb80960a1ed7c6e257c11",
       "hex"
     );
-    expect(() => getEthereumAddress(samplePubKey)).to.throw();
+    expect(() => getEthereumAddress(samplePubKey)).toThrow();
   });
 });
 
@@ -32,7 +31,7 @@ describe("findEthereumSig", () => {
       "304502203f25afdb7ed67094101cd71109261886db9abbf1ba20cc53aec20ba01c2e6baa022100ab0de6d40f8960c252fc6f21e35e8369126fb19033f10953c42a61766635df82",
       "hex"
     );
-    expect(JSON.stringify(findEthereumSig(sampleSignature))).to.equal(
+    expect(JSON.stringify(findEthereumSig(sampleSignature))).toEqual(
       '{"r":"3f25afdb7ed67094101cd71109261886db9abbf1ba20cc53aec20ba01c2e6baa","s":"54f2192bf0769f3dad0390de1ca17c95a83f2b567b5796e7fba7fd166a0061bf"}'
     );
   });
@@ -55,7 +54,7 @@ describe("determineCorrectV", () => {
     const expectedAddr = "0xe94e130546485b928c9c9b9a5e69eb787172952e";
     expect(
       determineCorrectV(sampleMsg, sampleR, sampleS, expectedAddr)
-    ).to.deep.equal({
+    ).toMatchObject({
       pubKey: "0xE94E130546485b928C9C9b9A5e69EB787172952e",
       v: 28,
     });
@@ -76,7 +75,7 @@ describe("determineCorrectV", () => {
     const expectedAddr = "0xe94e130546485b928c9c9b9a5e69eb787172952e";
     expect(
       determineCorrectV(sampleMsg, sampleR, sampleS, expectedAddr)
-    ).to.deep.equal({
+    ).toMatchObject({
       pubKey: "0xE94E130546485b928C9C9b9A5e69EB787172952e",
       v: 27,
     });
@@ -98,6 +97,6 @@ describe("determineCorrectV", () => {
     const expectedAddr = "0xe94e130546485b928c9c9b9a5e69eb787172952e";
     expect(() =>
       determineCorrectV(sampleMsg, sampleR, sampleS, expectedAddr)
-    ).to.throw();
+    ).toThrow();
   });
 });
