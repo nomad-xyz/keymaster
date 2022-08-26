@@ -1,4 +1,4 @@
-name: Build and Test Packages
+name: Build and test packages
 on: [ push ]
 jobs:
   build-and-test:
@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: borales/actions-yarn@v3
         with:
-          cmd: install
+          cmd: install --frozen-lockfile
       - uses: borales/actions-yarn@v3
         with:
           cmd: test:unit
