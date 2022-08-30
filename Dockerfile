@@ -10,6 +10,8 @@ COPY tsconfig.json \
      src \
      ./
 
-RUN yarn install
+RUN apt update -y \
+     && apt upgrade -y \
+     && yarn install
 
 CMD [ "yarn", "start" ]
