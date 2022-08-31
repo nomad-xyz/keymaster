@@ -1,4 +1,4 @@
-name: Build and test packages
+name: Build Keymaster application
 on: [ push ]
 jobs:
   build-and-test:

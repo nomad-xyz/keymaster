@@ -2,14 +2,13 @@
 # https://github.com/docker/metadata-action
 # https://github.com/docker/login-action#google-container-registry-gcr
 # https://github.com/docker/build-push-action
-name: Push Keymaster Image to GCR GitHub Action
+name: Build Keymaster docker container
 on:
   push:
     branches:
       - '**'
     tags:
       - '**'
-  pull_request:
 
 jobs:
   build-and-push-to-gcr:
