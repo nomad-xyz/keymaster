@@ -1,4 +1,4 @@
-FROM node:18.7.0
+FROM node:18.8.0
 
 ARG GIT_COMMIT
 ENV GIT_COMMIT=$GIT_COMMIT
@@ -10,6 +10,8 @@ COPY tsconfig.json \
      src \
      ./
 
-RUN yarn install
+RUN apt update -y \
+     && apt upgrade -y \
+     && yarn install
 
 CMD [ "yarn", "start" ]
